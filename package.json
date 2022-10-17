@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@vimeo/player": "^2.18.0",
-    "lazyload": "^2.0.0-rc.2",
+    "lodash.throttle": "^4.1.1",
     "modern-normalize": "^1.1.0",
     "si": "^2.0.0",
     "simplelightbox": "^2.10.3"
