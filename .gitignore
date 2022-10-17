@@ -107,3 +107,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# My changes
+assets/
+src/images/logo.png
