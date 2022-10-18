@@ -17,9 +17,9 @@ const onKeyDown = evt => {
     ? { ...localStorage.getItem(key) }
     : {};
 
-    localStorage.setItem(key, {...localStorage.getItem(key), [`${evt.target.name}`] : evt.target.value});
+console.log({ ...objFromStorage, [`${evt.target.name}`]: evt.target.value });
+    // localStorage.setItem(key, {...localStorage.getItem(key), [`${evt.target.name}`] : evt.target.value});
   // objFromStorage[evt.target.name] = evt.target.value;+
-    //localStorage.clear()
 };
 
 formEl.addEventListener('input', onKeyDown);
