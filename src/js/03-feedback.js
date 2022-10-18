@@ -6,21 +6,42 @@ const checkLocalstorage = key => {
   return !!localStorage.getItem(key);
 };
 
-const onClick = () => {
-  console.log(Object.values(localStorage.getItem('feedback-form-state')));
+const fillTheFieldsFromLocalStorage = (el, localStorageKey) => {
+  if (!checkLocalstorage(localStorageKey)) return;
+
+  const objFromStorage = JSON.parse(localStorage.getItem(localStorageKey));
+
+  for (const key in objFromStorage) {
+    if (Object.hasOwnProperty.call(objFromStorage, key)) {
+      el.elements[key].value = objFromStorage[key];
+    }
+  }
 };
 
-const onKeyDown = evt => {
+const onInput = (evt, objFromStorage = {}) => {
   const key = 'feedback-form-state';
 
-  const objFromStorage = checkLocalstorage(key)
-    ? { ...localStorage.getItem(key) }
-    : {};
+  if (checkLocalstorage(key))
+    objFromStorage = JSON.parse(localStorage.getItem(key));
 
-console.log({ ...objFromStorage, [`${evt.target.name}`]: evt.target.value });
-    // localStorage.setItem(key, {...localStorage.getItem(key), [`${evt.target.name}`] : evt.target.value});
-  // objFromStorage[evt.target.name] = evt.target.value;+
+  objFromStorage[evt.target.name] = evt.target.value;
+  localStorage.setItem(key, JSON.stringify(objFromStorage));
 };
 
-formEl.addEventListener('input', onKeyDown);
-formEl.addEventListener('click', onClick);
+const onSubmit = evt => {
+  const key = 'feedback-form-state';
+
+  const resultToConsole = checkLocalstorage(key)
+    ? JSON.parse(localStorage.getItem(key))
+    : { email: '', message: '' }; //выводи объект с полями email, message и текущими их значениями в консоль.
+
+  console.log(resultToConsole);
+
+  evt.preventDefault();
+  evt.currentTarget.reset();
+  localStorage.removeItem(key);
+};
+
+fillTheFieldsFromLocalStorage(formEl, 'feedback-form-state');
+formEl.addEventListener('input', throttle(onInput, 500));
+formEl.addEventListener('submit', onSubmit);
